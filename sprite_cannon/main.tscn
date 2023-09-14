@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://dymm5am3ekqle"]
+
+[ext_resource type="Script" path="res://sprite_cannon/main.gd" id="1_a803e"]
+[ext_resource type="PackedScene" uid="uid://djddij8cp0hx1" path="res://cannons/base/cannon.tscn" id="2_15633"]
+[ext_resource type="Script" path="res://camera/tracking_camera.gd" id="3_bssnl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jr7k5"]
+size = Vector2(1920, 100)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_x0sia"]
+size = Vector2(1920, 100)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_a803e")
+
+[node name="Cannon" parent="." instance=ExtResource("2_15633")]
+position = Vector2(224, 644)
+rotation = 3.14159
+gravity_scale = 0.0
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(968, 1024)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_jr7k5")
+debug_color = Color(0.831373, 0.207843, 0.811765, 0.776471)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+texture = SubResource("PlaceholderTexture2D_x0sia")
+
+[node name="Floor2" type="StaticBody2D" parent="."]
+position = Vector2(2968, 1512)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
+shape = SubResource("RectangleShape2D_jr7k5")
+debug_color = Color(0.831373, 0.207843, 0.811765, 0.776471)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2"]
+texture = SubResource("PlaceholderTexture2D_x0sia")
+
+[node name="TrackingCamera" type="Node2D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("3_bssnl")
+target = NodePath("../Cannon")

@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://bansfc64sbxjf"]
+
+[ext_resource type="Texture2D" uid="uid://xur04tqwlli8" path="res://art/circle.png" id="1_lopr4"]
+[ext_resource type="Texture2D" uid="uid://xgigq83ijumx" path="res://icon.svg" id="2_vqfmq"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_74qya"]
+rough = true
+absorbent = true
+
+[sub_resource type="GDScript" id="GDScript_ui6xn"]
+script/source = "extends RigidBody2D
+
+
+
+@export var torque_magnitude = 30000
+
+func _integrate_forces(state):
+	var torque_sign = 0
+	if Input.is_action_pressed(\"move_left\"):
+		torque_sign = -1
+	if Input.is_action_pressed(\"move_right\"):
+		torque_sign = 1
+	state.apply_torque(torque_magnitude*torque_sign)
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8er0h"]
+radius = 56.5685
+
+[node name="Wheel" type="RigidBody2D"]
+position = Vector2(146, 54)
+collision_layer = 4
+inertia = 1.1
+physics_material_override = SubResource("PhysicsMaterial_74qya")
+script = SubResource("GDScript_ui6xn")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8er0h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.563393, 0.563393)
+texture = ExtResource("1_lopr4")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+scale = Vector2(0.270309, 0.270309)
+texture = ExtResource("2_vqfmq")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(0, 32)
+scale = Vector2(0.270309, 0.270309)
+texture = ExtResource("2_vqfmq")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(-32, 0)
+scale = Vector2(0.270309, 0.270309)
+texture = ExtResource("2_vqfmq")
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+position = Vector2(32, 0)
+scale = Vector2(0.270309, 0.270309)
+texture = ExtResource("2_vqfmq")

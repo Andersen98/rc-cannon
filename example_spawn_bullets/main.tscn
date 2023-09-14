@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://blnxjtn8iwd11"]
+
+[ext_resource type="Script" path="res://example_spawn_bullets/main.gd" id="1_4mbpi"]
+[ext_resource type="Script" path="res://example_spawn_bullets/player.gd" id="2_s0645"]
+[ext_resource type="Texture2D" uid="uid://xgigq83ijumx" path="res://icon.svg" id="3_vsgu7"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_4mbpi")
+
+[node name="Player" type="Sprite2D" parent="."]
+position = Vector2(344, 224)
+scale = Vector2(0.768388, 0.768388)
+texture = ExtResource("3_vsgu7")
+script = ExtResource("2_s0645")
+
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]

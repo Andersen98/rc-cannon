@@ -1,0 +1,145 @@
+[gd_scene load_steps=11 format=3 uid="uid://ceqd7rgwbjruq"]
+
+[ext_resource type="PackedScene" uid="uid://djddij8cp0hx1" path="res://cannons/base/cannon.tscn" id="1_6vqik"]
+[ext_resource type="Texture2D" uid="uid://bf5a6sqmc2c0h" path="res://art/cannon_ball_unspiked.png" id="2_lqadt"]
+[ext_resource type="Texture2D" uid="uid://de6qhvq7lpyuh" path="res://art/cannon_ball_spiked.png" id="3_us3cr"]
+[ext_resource type="Texture2D" uid="uid://xgigq83ijumx" path="res://icon.svg" id="5_s66hu"]
+[ext_resource type="Texture2D" uid="uid://x60paypfm3pl" path="res://art/rope_link.png" id="7_8mawu"]
+
+[sub_resource type="GDScript" id="GDScript_bfi8m"]
+script/source = "extends RigidBody2D
+@export var num_links: = 3
+var a = []
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	const MyScript = preload(\"res://sprite_cannon/projectiles/rope_link.tscn\")
+	a.append(get_path())
+	for i in range(0,num_links):
+		var x = MyScript.instantiate()
+		x.node_b = a.back()
+		add_child(x)
+		
+		
+		if (i==0):
+			x.transform = x.transform.translated_local(24*Vector2.DOWN)
+		else:
+			x.transform= x.transform.translated_local((24 + i*48)*Vector2.DOWN)
+		a.append(x.get_path())
+		
+	
+			
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7voeh"]
+radius = 25.1794
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5upfn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lqadt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_us3cr")
+}],
+"loop": false,
+"name": &"spike",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ms750"]
+size = Vector2(2256, 163)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2xy50"]
+radius = 8.0
+height = 62.0
+
+[node name="Grapple" type="Node2D"]
+
+[node name="Body" parent="." instance=ExtResource("1_6vqik")]
+position = Vector2(341, 495)
+
+[node name="CannonBall" type="RigidBody2D" parent="."]
+position = Vector2(813, 336)
+linear_velocity = Vector2(0.395, 0)
+script = SubResource("GDScript_bfi8m")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CannonBall"]
+shape = SubResource("CircleShape2D_7voeh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CannonBall"]
+sprite_frames = SubResource("SpriteFrames_5upfn")
+animation = &"spike"
+frame_progress = 0.0841568
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(872, 683)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_ms750")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
+scale = Vector2(17.5, 1.26562)
+texture = ExtResource("5_s66hu")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(589, 776)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CapsuleShape2D_2xy50")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+rotation = 1.5708
+scale = Vector2(1.68001, 4.66674)
+texture = ExtResource("7_8mawu")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="RigidBody2D"]
+position = Vector2(0, -24)
+node_a = NodePath("../../StaticBody2D2")
+node_b = NodePath("..")
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="."]
+position = Vector2(608, 816)
+rotation = -0.785397
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D2"]
+rotation = 1.5708
+scale = Vector2(1.6889, -4.22236)
+texture = ExtResource("7_8mawu")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="RigidBody2D2"]
+position = Vector2(0, -24)
+node_a = NodePath("../../RigidBody2D")
+node_b = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
+shape = SubResource("CapsuleShape2D_2xy50")
+
+[node name="RigidBody2D3" type="RigidBody2D" parent="."]
+position = Vector2(608, 848)
+rotation = 0.785397
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D3"]
+shape = SubResource("CapsuleShape2D_2xy50")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D3"]
+rotation = 1.5708
+scale = Vector2(1.64, 4.83999)
+texture = ExtResource("7_8mawu")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="RigidBody2D3"]
+position = Vector2(0, -24)
+node_a = NodePath("../../RigidBody2D2")
+node_b = NodePath("..")

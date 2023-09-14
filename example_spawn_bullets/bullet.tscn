@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0nh58hiwa8i0"]
+
+[ext_resource type="Script" path="res://example_spawn_bullets/bullet.gd" id="1_5sr3v"]
+[ext_resource type="Texture2D" uid="uid://kh58nosydo8q" path="res://art/cannon_barrel.png" id="1_qheeq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vqks8"]
+size = Vector2(38.85, 8.675)
+
+[node name="Bullet" type="Area2D"]
+script = ExtResource("1_5sr3v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vqks8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.139218, 0.139218)
+texture = ExtResource("1_qheeq")

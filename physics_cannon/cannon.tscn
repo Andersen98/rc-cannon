@@ -1,0 +1,112 @@
+[gd_scene load_steps=14 format=3 uid="uid://chfiucpg06ck0"]
+
+[ext_resource type="Script" path="res://physics_cannon/cannon_body.gd" id="1_1as40"]
+[ext_resource type="Texture2D" uid="uid://fif7d4xsbexc" path="res://art/red rectangle.png" id="2_62kil"]
+[ext_resource type="Script" path="res://physics_cannon/cannon_barrel.gd" id="3_ii6it"]
+[ext_resource type="Texture2D" uid="uid://kh58nosydo8q" path="res://art/cannon_barrel.png" id="4_2egr7"]
+[ext_resource type="Script" path="res://physics_cannon/cannon_tip.gd" id="5_xc6ok"]
+[ext_resource type="Texture2D" uid="uid://dh2tc0d5jkab5" path="res://art/cannon_tip.png" id="6_dytnq"]
+[ext_resource type="Texture2D" uid="uid://xur04tqwlli8" path="res://art/circle.png" id="7_0mwd0"]
+[ext_resource type="PackedScene" uid="uid://bansfc64sbxjf" path="res://physics_cannon/wheel.tscn" id="7_2h17j"]
+[ext_resource type="Texture2D" uid="uid://xgigq83ijumx" path="res://icon.svg" id="8_ocjjj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjmab"]
+size = Vector2(336.64, 139.135)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gpycn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c7al3"]
+size = Vector2(286, 57)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fn3h8"]
+
+[node name="Cannon" type="Node2D"]
+metadata/_edit_group_ = true
+
+[node name="CannonBase" type="RigidBody2D" parent="."]
+collision_priority = 36.0
+script = ExtResource("1_1as40")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CannonBase"]
+shape = SubResource("RectangleShape2D_jjmab")
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase"]
+scale = Vector2(1.085, 0.99)
+texture = ExtResource("2_62kil")
+
+[node name="cannon_barrel" type="RigidBody2D" parent="CannonBase"]
+position = Vector2(116.905, -60.57)
+collision_layer = 2
+collision_mask = 3
+collision_priority = 36.0
+physics_material_override = SubResource("PhysicsMaterial_gpycn")
+script = ExtResource("3_ii6it")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CannonBase/cannon_barrel"]
+position = Vector2(0, 0.500001)
+shape = SubResource("RectangleShape2D_c7al3")
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase/cannon_barrel"]
+texture = ExtResource("4_2egr7")
+
+[node name="CannonTip" type="Node2D" parent="CannonBase/cannon_barrel"]
+position = Vector2(126, 0)
+script = ExtResource("5_xc6ok")
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase/cannon_barrel/CannonTip"]
+texture = ExtResource("6_dytnq")
+
+[node name="RightWheel" parent="CannonBase" instance=ExtResource("7_2h17j")]
+
+[node name="LeftWheel" parent="CannonBase" instance=ExtResource("7_2h17j")]
+position = Vector2(-142, 54)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="CannonBase"]
+position = Vector2(162, -20)
+collision_layer = 2
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CannonBase/StaticBody2D"]
+shape = SubResource("RectangleShape2D_fn3h8")
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase/StaticBody2D"]
+scale = Vector2(0.149761, 0.149761)
+texture = ExtResource("8_ocjjj")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="CannonBase"]
+position = Vector2(-150, -20)
+collision_layer = 2
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CannonBase/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_fn3h8")
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase/StaticBody2D2"]
+scale = Vector2(0.149761, 0.149761)
+texture = ExtResource("8_ocjjj")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="CannonBase"]
+position = Vector2(0, -58.58)
+node_a = NodePath("..")
+node_b = NodePath("../cannon_barrel")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CannonBase/PinJoint2D"]
+z_index = 35
+scale = Vector2(0.385, 0.385)
+texture = ExtResource("7_0mwd0")
+
+[node name="LeftWheelAxle" type="PinJoint2D" parent="CannonBase"]
+position = Vector2(-150, 54)
+node_a = NodePath("..")
+node_b = NodePath("../LeftWheel")
+metadata/_edit_group_ = true
+
+[node name="RightWheelAxle" type="PinJoint2D" parent="CannonBase"]
+position = Vector2(146, 54)
+node_a = NodePath("..")
+node_b = NodePath("../RightWheel")
+metadata/_edit_group_ = true

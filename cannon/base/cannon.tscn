@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://djddij8cp0hx1"]
+
+[ext_resource type="Script" path="res://cannon/base/bas_cannon.gd" id="1_aesud"]
+[ext_resource type="PackedScene" uid="uid://qso78jb3ugr0" path="res://sprite_cannon/wheel.tscn" id="2_w87lv"]
+[ext_resource type="Script" path="res://sprite_cannon/barrel_pivot.gd" id="3_3tyqb"]
+[ext_resource type="Texture2D" uid="uid://xur04tqwlli8" path="res://art/circle.png" id="4_rdao6"]
+[ext_resource type="Texture2D" uid="uid://kh58nosydo8q" path="res://art/cannon_barrel.png" id="5_efrex"]
+[ext_resource type="Script" path="res://sprite_cannon/cannon_body.gd" id="6_oeuy6"]
+[ext_resource type="Texture2D" uid="uid://fif7d4xsbexc" path="res://art/red rectangle.png" id="7_arkg8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_atp3g"]
+radius = 35.1283
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j240k"]
+size = Vector2(288, 59)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_msuqr"]
+size = Vector2(307, 139)
+
+[node name="BaseCannon" type="Node"]
+script = ExtResource("1_aesud")
+
+[node name="LeftWheel" parent="." instance=ExtResource("2_w87lv")]
+z_index = 15
+position = Vector2(-133, 50)
+
+[node name="PinJoint2D" type="PinJoint2D" parent="LeftWheel"]
+node_a = NodePath("..")
+node_b = NodePath("../../Body")
+
+[node name="RightWheel" parent="." instance=ExtResource("2_w87lv")]
+z_index = 15
+position = Vector2(134, 50)
+inertia = 3.12
+
+[node name="PinJoint2D" type="PinJoint2D" parent="RightWheel"]
+node_a = NodePath("..")
+node_b = NodePath("../../Body")
+
+[node name="Barrel" type="Area2D" parent="."]
+position = Vector2(0, -70)
+script = ExtResource("3_3tyqb")
+metadata/_edit_group_ = true
+
+[node name="AnchorShape" type="CollisionShape2D" parent="Barrel"]
+shape = SubResource("CircleShape2D_atp3g")
+
+[node name="AnchorSprite" type="Sprite2D" parent="Barrel"]
+z_index = 10
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("4_rdao6")
+
+[node name="Shaft" type="Area2D" parent="Barrel"]
+z_index = 7
+position = Vector2(134, 0)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barrel/Shaft"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_j240k")
+
+[node name="Sprite2D" type="Sprite2D" parent="Barrel/Shaft"]
+texture = ExtResource("5_efrex")
+
+[node name="Tip" type="Node2D" parent="Barrel"]
+unique_name_in_owner = true
+position = Vector2(279, 0)
+
+[node name="Body" type="RigidBody2D" parent="."]
+script = ExtResource("6_oeuy6")
+torque_magnitude = 500000
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+shape = SubResource("RectangleShape2D_msuqr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Body"]
+texture = ExtResource("7_arkg8")
